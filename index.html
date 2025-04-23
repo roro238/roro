@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحدي الألوان</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
+    #colorBox {
+      width: 150px;
+      height: 150px;
+      margin-top: 50px;
+      border-radius: 10px;
+      margin: auto;
+    }
+    .color-btn {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #timer, #score {
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <h1>تحدي الألوان</h1>
+  <div id="colorBox"></div>
+  <div id="timer">الوقت: 30</div>
+  <div id="score">النتيجة: 0</div>
+  <div>
+    <button class="color-btn" id="color1"></button>
+    <button class="color-btn" id="color2"></button>
+    <button class="color-btn" id="color3"></button>
+    <button class="color-btn" id="color4"></button>
+  </div>
+
+  <script>
+    let score = 0;
+    let timeLeft = 30;
+    let timer;
+    let currentColor;
+
+    const colorBtns = document.querySelectorAll('.color-btn');
+    const colorBox = document.getElementById('colorBox');
+    const timerDisplay = document.getElementById('timer');
+    const scoreDisplay = document.getElementById('score');
+
+    const colors = ['#ff6666', '#66ff66', '#6666ff', '#ffcc00', '#00ccff', '#ff66cc'];
+
+    // Generate random color for the box and buttons
+    function newColor() {
+      currentColor = colors[Math.floor(Math.random() * colors.length)];
+      colorBox.style.backgroundColor = currentColor;
+      const randomIndex = Math.floor(Math.random() * colorBtns.length);
+      
+      // Assign colors to buttons
+      colorBtns.forEach((btn, index) => {
+        if (index === randomIndex) {
+          btn.style.backgroundColor = currentColor;
+        } else {
+          btn.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        }
+      });
+    }
+
+    // Start timer
+    function startTimer() {
+      timer = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = الوقت: ${timeLeft};
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          alert(الوقت انتهى! النتيجة النهائية: ${score});
+        }
+      }, 1000);
+    }
+
+    // Handle button clicks
+    function handleClick(event) {
+      const btnColor = event.target.style.backgroundColor;
+      if (btnColor === currentColor) {
+        score++;
+        scoreDisplay.textContent = النتيجة: ${score};
+      }
+      newColor();
+    }
+
+    // Add event listeners to buttons
+    colorBtns.forEach(btn => btn.addEventListener('click', handleClick));
+
+    // Initialize game
+    newColor();
+    startTimer();
+
+  </script>
+</body>
+</html>
